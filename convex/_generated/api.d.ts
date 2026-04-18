@@ -8,8 +8,10 @@
  * @module
  */
 
+import type * as auth from "../auth.js";
 import type * as cleanup from "../cleanup.js";
 import type * as crons from "../crons.js";
+import type * as http from "../http.js";
 import type * as issues from "../issues.js";
 import type * as projects from "../projects.js";
 import type * as seed from "../seed.js";
@@ -21,8 +23,10 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  auth: typeof auth;
   cleanup: typeof cleanup;
   crons: typeof crons;
+  http: typeof http;
   issues: typeof issues;
   projects: typeof projects;
   seed: typeof seed;
