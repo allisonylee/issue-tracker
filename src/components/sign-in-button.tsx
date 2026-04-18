@@ -2,6 +2,7 @@ import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { Button } from "@/components/ui/button";
 import { Github, LogOut } from "lucide-react";
+import SignedOutButton from "./sign-out-button";
 
 function SignInButton() {
     const { signIn, signOut } = useAuthActions();
@@ -18,10 +19,7 @@ function SignInButton() {
                 </Button>
             </Unauthenticated>
             <Authenticated>
-                <Button variant="outline" onClick={() => void signOut()}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sign out
-                </Button>
+                <SignedOutButton onSignOut={() => void signOut} />
             </Authenticated>
         </>
     )
