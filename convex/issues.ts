@@ -2,6 +2,7 @@ import { query, mutation, MutationCtx } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
 import { getCurrentUser } from "./users";
 import type { Doc, Id } from "./_generated/dataModel";
+import { assertProjectOwner } from "./projects";
 
 async function assertIssueCreatorAndEditable(
   ctx: MutationCtx,
@@ -76,6 +77,12 @@ export const updateStatus = mutation({
     ),
   },
   handler: async (ctx, args) => {
+    const issue = await ctx.db.get(args.id);
+    if (issue === null) {
+      throw new ConvexError("issue not found");
+    }
+
+    await assertProjectOwner(ctx, issue.projectId);
     await ctx.db.patch(args.id, { status: args.status });
   },
 });
