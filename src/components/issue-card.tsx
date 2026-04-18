@@ -15,6 +15,7 @@ import useUpdateIssueStatus from "@/hooks/use-update-issue-status";
 import EditIssueDialog from "@/components/edit-issue-dialog";
 import { api } from "../../convex/_generated/api";
 import type { Doc } from "../../convex/_generated/dataModel";
+import { cn } from "@/lib/utils";
 
 type IssueCardProps = {
   issue: Doc<"issues">;
@@ -37,9 +38,9 @@ function IssueCard({ issue, isOverlay }: IssueCardProps) {
     currentUser._id === project.ownerId;
   const canEditOrDelete = isCreator && issue.status === "todo";
 
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+  const {attributes, listeners, setNodeRef, isDragging} = useDraggable({
     id: issue._id,
-    disabled: isOverlay,
+    disabled: isOverlay || !isProjectOwner,
   });
 
   return (
@@ -50,7 +51,9 @@ function IssueCard({ issue, isOverlay }: IssueCardProps) {
       >
         <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
           <CardTitle
-            className="flex-1 cursor-grab text-sm font-medium leading-snug active:cursor-grabbing"
+            className={cn("flex-1 text-sm font-medium leading-snug", {
+              "cursor-grab active:cursor-grabbing": isProjectOwner,
+            })}
             {...listeners}
             {...attributes}
           >
