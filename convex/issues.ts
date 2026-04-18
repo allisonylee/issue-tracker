@@ -1,5 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { getCurrentUser } from "./users";
 
 export const list = query({
   args: {
@@ -20,8 +21,10 @@ export const create = mutation({
     description: v.string(),
   },
   handler: async (ctx, args) => {
+    const user = await getCurrentUser(ctx);
     await ctx.db.insert("issues", {
       projectId: args.projectId,
+      creatorId: user._id,
       title: args.title,
       description: args.description,
       status: "todo",

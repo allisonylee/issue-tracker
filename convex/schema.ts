@@ -7,15 +7,18 @@ export default defineSchema({
   projects: defineTable({
     name: v.string(),
     description: v.optional(v.string()),
+    ownerId: v.id("users"),
     deletedAt: v.optional(v.number()),
   })
     .index("by_deletedAt", ["deletedAt"])
+    .index("by_owner", ["ownerId"])
     .searchIndex("search_name", {
       searchField: "name",
       filterFields: ["deletedAt"],
     }),
   issues: defineTable({
     projectId: v.id("projects"),
+    creatorId: v.id("users"),
     title: v.string(),
     description: v.string(),
     status: v.union(

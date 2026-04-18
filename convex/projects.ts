@@ -2,6 +2,7 @@ import { query, mutation, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 import { paginationOptsValidator } from "convex/server";
+import { getCurrentUser } from "./users";
 
 const CASCADE_DELETE_BATCH_SIZE = 100;
 
@@ -44,9 +45,11 @@ export const create = mutation({
     description: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const user = await getCurrentUser(ctx);
     const projectId = await ctx.db.insert("projects", {
       name: args.name,
       description: args.description,
+      ownerId: user._id,
     });
     return projectId;
   },
