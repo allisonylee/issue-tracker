@@ -8,7 +8,7 @@ import {
   type DragStartEvent,
   type DragEndEvent,
 } from "@dnd-kit/core";
-import { useQuery } from "convex/react";
+import { Authenticated, useQuery } from "convex/react";
 import useUpdateIssueStatus from "@/hooks/use-update-issue-status";
 import { api } from "../../convex/_generated/api";
 import type { Doc, Id } from "../../convex/_generated/dataModel";
@@ -74,7 +74,9 @@ function KanbanBoard({ projectId }: KanbanBoardProps) {
     >
       <div>
         <div className="mb-6 flex justify-end">
-          <AddIssueDialog projectId={projectId} />
+          <Authenticated>
+            <AddIssueDialog projectId={projectId} />
+          </Authenticated>
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {COLUMNS.map((column) => (

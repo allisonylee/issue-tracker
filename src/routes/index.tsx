@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { usePaginatedQuery } from "convex/react";
+import { Authenticated, usePaginatedQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import ProjectCard from "@/components/project-card";
 import ProjectSearch from "@/components/project-search";
@@ -26,7 +26,9 @@ function ProjectListPage() {
         <h2 className="text-xl font-semibold">Projects</h2>
         <div className="flex items-center gap-2">
           <ProjectSearch value={searchQuery} onChange={setSearchQuery} />
-          <CreateProjectDialog />
+          <Authenticated>
+            <CreateProjectDialog />
+          </Authenticated>
         </div>
       </div>
       {status === "LoadingFirstPage" ? (
